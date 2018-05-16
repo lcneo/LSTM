@@ -79,10 +79,11 @@ def getrfindex(lose):
     return rfindex
 
 
+#对数据缺失块进行填充
 def blockfilling(data,index,fillindex):
     fdata = data
     for i in tqdm(range(len(index))):
-        fdata['value'].ix[index[i]] = fdata['value'].ix[fillindex[i]]
+        fdata['value'][index[i]] = fdata['value'][fillindex[i]]
     return fdata
 
 
@@ -115,4 +116,5 @@ if __name__ == "__main__":
     
     a = filling(save=True)
     b = reverse_filling(save=True)
+    
     
