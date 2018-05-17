@@ -1,5 +1,9 @@
-data = chickenpox_dataset;
-data = [data{:}];
+% data = chickenpox_dataset;
+% data = [data{:}];
+
+csv = csvread('data/threed.csv',1,0);
+ 
+data = csv(:,4);
 
 figure
 plot(data)
@@ -24,7 +28,10 @@ YTrain = (YTrain - mu) / sig;
 
 XTest = (XTest - mu) / sig;
 
+XTrain = XTrain';
+YTrain = YTrain';
 
+XTest = XTest';
 
 
 inputSize = 1;
@@ -39,7 +46,7 @@ layers = [ ...
 
 
 opts = trainingOptions('adam', ...
-    'MaxEpochs',250, ...
+    'MaxEpochs',1000, ...
     'GradientThreshold',1, ...
     'InitialLearnRate',0.005, ...
     'LearnRateSchedule','piecewise', ...
