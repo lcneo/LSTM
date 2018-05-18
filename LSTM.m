@@ -1,6 +1,5 @@
-% data = chickenpox_dataset;
-% data = [data{:}];
 
+filepath = "data/outputs/"+strylabel+"/"+strxlabel+"/"+type;
 csv = csvread('data/pressure/threed.csv',1,0);
  
 data = csv(:,4);

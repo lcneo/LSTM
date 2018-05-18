@@ -1,37 +1,37 @@
-% data = chickenpox_dataset;
-% data = [data{:}];
-
-
-
-function  lstmfitting(path,type,strxlabel,strylabel,epoch)
+function  lstmfitting(path,strylabel,strxlabel,type,epoch)
 %myFun - Description
 %
 % Syntax: output = myFun(input)
 %
 % Long description
 
+filepath = "data/outputs/"+strylabel+"/"+strxlabel+"/"+type;
 
-csv = csvread(path,1,0);
- 
-data = csv(:,type);
+mkdir(filepath);
+csvdata = csvread(path,1,0);
 
-if type == 2;
-    strtype = 'max';
-elseif type == 3;
-    strtype = 'min';
-elseif type == 4;
-    strtype = 'mean';
-elseif type == 5;
-    strtype = 'medain'
+if type == "max";
+    numm = 2;
+elseif type == "min";
+    numm = 3;
+elseif type == "mean";
+    numm = 4;
+elseif type == "median";
+    numm = 5;
 end
     
+data = csvdata(:,numm);
 
 
-figure
+
+f1 = figure;
 plot(data)
 xlabel(strxlabel)
 ylabel(strylabel)
-title(strxlabel+" " + strylabel + " (" +strtype+")" )
+title(strylabel +" / "+strxlabel+ " (" +type+")" );
+% set(f1,"position",[5,5,1920,1029]);
+saveas(f1,filepath+"/f1.fig");
+saveas(f1,filepath+"/f1.jpg");
 
 
 
@@ -91,16 +91,19 @@ YPred = sig*YPred + mu;
 
 rmse = sqrt(mean((YPred-YTest).^2));
 
-figure
+f2 = figure;
 plot(data(1:numTimeStepsTrain))
 hold on
 idx = numTimeStepsTrain:(numTimeStepsTrain+numTimeStepsTest);
 plot(idx,[data(numTimeStepsTrain) YPred],'.-')
 hold off
-xlabel(strylabel)
-ylabel(strxlabel)
+xlabel(strxlabel)
+ylabel(strylabel)
 title("Forecast")
 legend(["Observed" "Forecast"])
+% set(f2,"position",[5,5,1920,1029]);
+saveas(f2,filepath+"/f2.fig");
+saveas(f2,filepath+"/f2.jpg");
 
 
 % figure
@@ -135,7 +138,7 @@ YPred = sig*YPred + mu;
 
 rmse = sqrt(mean((YPred-YTest).^2));
 
-figure
+f3 = figure;
 subplot(2,1,1)
 plot(YTest)
 hold on
@@ -151,4 +154,11 @@ stem(YPred - YTest)
 xlabel(strxlabel)
 ylabel("Error")
 title("RMSE = " + rmse(:,end))
+% set(f3,"position",[5,5,1920,1029]);
+saveas(f3,filepath+"/f3.fig");
+saveas(f3,filepath+"/f3.jpg");
+
+clear all
+close all
+
 end
