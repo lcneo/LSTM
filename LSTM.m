@@ -113,7 +113,7 @@ YPred = sig*YPred + mu;
 
 rmse = sqrt(mean((YPred-YTest).^2));
 
-figure
+fend = figure;
 subplot(2,1,1)
 plot(YTest)
 hold on
@@ -128,3 +128,5 @@ stem(YPred - YTest)
 xlabel("3 day")
 ylabel("Error")
 title("RMSE = " + rmse(:,end))
+% set(fend,"position",[0,0,1920,1080]);
+saveas(fend,"data/outputs/test.jpg","position",[0,0,1920,1080]);
