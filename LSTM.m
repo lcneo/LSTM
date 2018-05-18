@@ -88,14 +88,14 @@ hold on
 plot(YPred,'.-')
 hold off
 legend(["Observed" "Forecast"])
-ylabel("Cases")
+ylabel("HAP")
 title("Forecast")
 
 subplot(2,1,2)
 stem(YPred - YTest)
-xlabel("Month")
+xlabel("3 day")
 ylabel("Error")
-title("RMSE = " + rmse)
+%title("RMSE = " + rmse)
 
 
 
@@ -125,6 +125,6 @@ title("Forecast with Updates")
 
 subplot(2,1,2)
 stem(YPred - YTest)
-xlabel("Month")
+xlabel("3 day")
 ylabel("Error")
-title("RMSE = " + rmse)
+%title("RMSE = " + rmse)
