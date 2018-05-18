@@ -14,7 +14,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 def loaddata():
-    data = pd.read_csv("data/origindata.txt",header=None)
+    data = pd.read_csv("data/ycqd.txt",header=None,sep=' ')
     data.columns = ['time','value']
     return data
 
@@ -95,7 +95,7 @@ def filling(save=False):
     findex = getfindex(lose)
     data = blockfilling(data,index,findex)
     if(save == True):
-        data.to_csv("data/fillingdata.csv",index=False,encoding="utf-8")
+        data.to_csv("data/fycqd.csv",index=False,encoding="utf-8")
         print("成功写入文件")
     return data
 
@@ -107,7 +107,7 @@ def reverse_filling(save=False):
     rfindex = getrfindex(lose)
     data = blockfilling(data,index,rfindex)
     if(save == True):
-        data.to_csv("data/rfillingdata.csv",index=False,encoding="utf-8")
+        data.to_csv("data/rfycqd.csv",index=False,encoding="utf-8")
         print("成功写入文件")
     return data
 

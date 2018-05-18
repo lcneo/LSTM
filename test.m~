@@ -1,9 +1,0 @@
-data = csvread(path,1,0);
-
-ymax = data(:,2);
-ymin = data(:,3);
-ymean = data(:,4);
-ymedian = data(:,5);
-
-
-plot(ymax,''

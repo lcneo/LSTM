@@ -1,7 +1,7 @@
 % data = chickenpox_dataset;
 % data = [data{:}];
 
-csv = csvread('data/threed.csv',1,0);
+csv = csvread('data/pressure/threed.csv',1,0);
  
 data = csv(:,4);
 
@@ -46,7 +46,7 @@ layers = [ ...
 
 
 opts = trainingOptions('adam', ...
-    'MaxEpochs',1000, ...
+    'MaxEpochs',800, ...
     'GradientThreshold',1, ...
     'InitialLearnRate',0.005, ...
     'LearnRateSchedule','piecewise', ...
@@ -75,8 +75,8 @@ hold on
 idx = numTimeStepsTrain:(numTimeStepsTrain+numTimeStepsTest);
 plot(idx,[data(numTimeStepsTrain) YPred],'.-')
 hold off
-xlabel("Month")
-ylabel("Cases")
+xlabel("HPA")
+ylabel("3 day")
 title("Forecast")
 legend(["Observed" "Forecast"])
 
