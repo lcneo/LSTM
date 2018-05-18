@@ -1,15 +1,37 @@
 % data = chickenpox_dataset;
 % data = [data{:}];
 
-csv = csvread('data/pressure/threed.csv',1,0);
+
+
+function  lstmfitting(path,type,strxlabel,strylabel,epoch)
+%myFun - Description
+%
+% Syntax: output = myFun(input)
+%
+% Long description
+
+
+csv = csvread(path,1,0);
  
-data = csv(:,4);
+data = csv(:,type);
+
+if type == 2;
+    strtype = 'max';
+elseif type == 3;
+    strtype = 'min';
+elseif type == 4;
+    strtype = 'mean';
+elseif type == 5;
+    strtype = 'medain'
+end
+    
+
 
 figure
 plot(data)
-xlabel("Month")
-ylabel("Cases")
-title("Monthy Cases of Chickenpox")
+xlabel(strxlabel)
+ylabel(strylabel)
+title(strxlabel+" " + strylabel + " (" +strtype+")" )
 
 
 
@@ -46,7 +68,7 @@ layers = [ ...
 
 
 opts = trainingOptions('adam', ...
-    'MaxEpochs',250, ...
+    'MaxEpochs',epoch, ...
     'GradientThreshold',1, ...
     'InitialLearnRate',0.005, ...
     'LearnRateSchedule','piecewise', ...
@@ -75,27 +97,27 @@ hold on
 idx = numTimeStepsTrain:(numTimeStepsTrain+numTimeStepsTest);
 plot(idx,[data(numTimeStepsTrain) YPred],'.-')
 hold off
-xlabel("HPA")
-ylabel("3 day")
+xlabel(strylabel)
+ylabel(strxlabel)
 title("Forecast")
 legend(["Observed" "Forecast"])
 
 
-figure
-subplot(2,1,1)
-plot(YTest)
-hold on
-plot(YPred,'.-')
-hold off
-legend(["Observed" "Forecast"])
-ylabel("HPA")
-title("Forecast")
-
-subplot(2,1,2)
-stem(YPred - YTest)
-xlabel("3 day")
-ylabel("Error")
-title("RMSE = " + rmse(:,end));
+% figure
+% subplot(2,1,1)
+% plot(YTest)
+% hold on
+% plot(YPred,'.-')
+% hold off
+% legend(["Observed" "Forecast"])
+% ylabel("HPA")
+% title("Forecast")
+% 
+% subplot(2,1,2)
+% stem(YPred - YTest)
+% xlabel("3 day")
+% ylabel("Error")
+% title("RMSE = " + rmse(:,end))
 
 
 
@@ -120,11 +142,13 @@ hold on
 plot(YPred,'.-')
 hold off
 legend(["Observed" "Predicted"])
-ylabel("HPA")
+ylabel(strylabel)
+xlabel(strxlabel)
 title("Forecast with Updates")
 
 subplot(2,1,2)
 stem(YPred - YTest)
-xlabel("3 day")
+xlabel(strxlabel)
 ylabel("Error")
 title("RMSE = " + rmse(:,end))
+end
