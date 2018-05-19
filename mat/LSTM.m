@@ -64,27 +64,9 @@ for i = 2:numTimeStepsTest
     [net,YPred(1,i)] = predictAndUpdateState(net,YPred(i-1));
 end
 
-YPred = sig*YPred + mu;
+% YPred = sig*YPred + mu;
 
-rmse = sqrt(mean((YPred-YTest).^2));
-
-
-% figure
-% subplot(2,1,1)
-% plot(YTest)
-% hold on
-% plot(YPred,'.-')
-% hold off
-% legend(["Observed" "Forecast"])
-% ylabel("HPA")
-% title("Forecast")
-% 
-% subplot(2,1,2)
-% stem(YPred - YTest)
-% xlabel("3 day")
-% ylabel("Error")
-% title("RMSE = " + rmse(:,end));
-
+% rmse = sqrt(mean((YPred-YTest).^2));
 
 
 net = resetState(net);
@@ -101,7 +83,6 @@ YPred = sig*YPred + mu;
 
 rmse = sqrt(mean((YPred-YTest).^2));
 
-
 figure
 plot(data(1:numTimeStepsTrain))
 hold on
@@ -112,7 +93,6 @@ xlabel("HPA")
 ylabel("3 day")
 title("Forecast")
 legend(["Observed" "Forecast"])
-
 
 fend = figure;
 subplot(2,1,1)
@@ -129,7 +109,5 @@ stem(YPred - YTest)
 xlabel("3 day")
 ylabel("Error")
 title("RMSE = " + rmse(:,end))
-
-
 % set(fend,"position",[0,0,1920,1080]);
 % saveas(fend,"data/outputs/test.jpg","position",[0,0,1920,1080]);

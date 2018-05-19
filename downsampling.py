@@ -22,7 +22,7 @@ def loaddata(path):
 #通过groupby对每一个小时的数据进行降采样
 def oneh(data):
     cdata = data
-    cdata['time'] =cdata['time'] // 100
+    cdata['time'] =cdata['time'] // 2*2
     grouped = cdata['value'].groupby(cdata['time'])
     return grouped
     
@@ -59,6 +59,12 @@ def threed(data):
     grouped = cdata['value'].groupby(cdata['time'])
     return grouped
 
+def onew(data):
+    cdata = data
+    cdata['time'] =cdata['time'] // 120000*12
+    grouped = cdata['value'].groupby(cdata['time'])
+    return grouped
+
 #将降采样函数存入词典中循环调用
 ratio= {'oneh':oneh,'threeh':threeh,'sixh':sixh,'twelveh':twelveh,'oned':oned,'threed':threed}
 
@@ -79,7 +85,7 @@ def getdsdata(grouped):
 #存储结果文件
 def savedsdata(filedata,filename):
     
-    filedata.to_csv("data/"+filename+".csv",index=False,encoding="utf-8")
+    filedata.to_csv("data/ycqd/"+filename+".csv",index=False,encoding="utf-8")
     print("{0}文件写入成功!".format(filename+".csv"))
 
 #完成一次降采样
@@ -106,6 +112,9 @@ def rds():
     dwsamolingall(path,r=True)
     
 if __name__ == "__main__":
-    ds()
-    rds()
-    
+    #ds()
+    #rds()
+    #path = 'data/pressure/fillingdata.csv'
+    #dwsamoling(path,"onew",onew)
+    path = "data/ycqd/fycqd.csv"
+    dwsamoling(path,"twelveh",oneh)

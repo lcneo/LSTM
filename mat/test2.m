@@ -1,14 +1,38 @@
+path="data/pressure/threed.csv";
 
-% filepath = "data/outputs/"+strylabel+"/"+strxlabel+"/"+type;
-csv = csvread('data/pressure/threed.csv',1,0);
- 
-data = csv(:,4);
+strylabel="HPA";
+strxlabel ="3day";
+type="mean";
 
-figure
+epoch=1000;
+
+filepath = "data/outputs/"+strylabel+"/"+strxlabel+"/"+type;
+
+mkdir(filepath);
+csvdata = csvread(path,1,0);
+
+if type == "max";
+    numm = 2;
+elseif type == "min";
+    numm = 3;
+elseif type == "mean";
+    numm = 4;
+elseif type == "median";
+    numm = 5;
+end
+    
+data = csvdata(:,numm);
+
+
+
+f1 = figure;
 plot(data)
-xlabel("Month")
-ylabel("Cases")
-title("Monthy Cases of Chickenpox")
+xlabel(strxlabel)
+ylabel(strylabel)
+title(strylabel +" / "+strxlabel+ " (" +type+")" );
+% set(f1,"position",[5,5,1920,1029]);
+saveas(f1,filepath+"/f1.fig");
+saveas(f1,filepath+"/f1.jpg");
 
 
 
@@ -45,7 +69,7 @@ layers = [ ...
 
 
 opts = trainingOptions('adam', ...
-    'MaxEpochs',250, ...
+    'MaxEpochs',epoch, ...
     'GradientThreshold',1, ...
     'InitialLearnRate',0.005, ...
     'LearnRateSchedule','piecewise', ...
@@ -83,7 +107,7 @@ rmse = sqrt(mean((YPred-YTest).^2));
 % stem(YPred - YTest)
 % xlabel("3 day")
 % ylabel("Error")
-% title("RMSE = " + rmse(:,end));
+% title("RMSE = " + rmse(:,end))
 
 
 
@@ -101,35 +125,37 @@ YPred = sig*YPred + mu;
 
 rmse = sqrt(mean((YPred-YTest).^2));
 
-
-figure
+f2 = figure;
 plot(data(1:numTimeStepsTrain))
 hold on
 idx = numTimeStepsTrain:(numTimeStepsTrain+numTimeStepsTest);
 plot(idx,[data(numTimeStepsTrain) YPred],'.-')
 hold off
-xlabel("HPA")
-ylabel("3 day")
+xlabel(strxlabel)
+ylabel(strylabel)
 title("Forecast")
 legend(["Observed" "Forecast"])
+% set(f2,"position",[5,5,1920,1029]);
+saveas(f2,filepath+"/f2.fig");
+saveas(f2,filepath+"/f2.jpg");
 
 
-fend = figure;
+f3 = figure;
 subplot(2,1,1)
 plot(YTest)
 hold on
 plot(YPred,'.-')
 hold off
 legend(["Observed" "Predicted"])
-ylabel("HPA")
+ylabel(strylabel)
+xlabel(strxlabel)
 title("Forecast with Updates")
 
 subplot(2,1,2)
 stem(YPred - YTest)
-xlabel("3 day")
+xlabel(strxlabel)
 ylabel("Error")
 title("RMSE = " + rmse(:,end))
-
-
-% set(fend,"position",[0,0,1920,1080]);
-% saveas(fend,"data/outputs/test.jpg","position",[0,0,1920,1080]);
+% set(f3,"position",[5,5,1920,1029]);
+saveas(f3,filepath+"/f3.fig");
+saveas(f3,filepath+"/f3.jpg");
